@@ -30,13 +30,12 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     /* We only need the keyphrase to start recognition, one menu with list of choices,
      and one word that is required for method switchSearch - it will bring recognizer
      back to listening for the keyphrase*/
-    public static final String KWS_SEARCH = "کال کریں";
     public static final String MENU_SEARCH = "عابد کو کال کرو";
     /* Keyword we are looking for to activate recognition */
     private static final String KEYPHRASE = "کال کریں";
-    public static String result;
+    public static String result="";
 
-
+    Intent in;
     Button btn1;
     TextView textView;
 
@@ -46,14 +45,10 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
-        btn1=findViewById(R.id.button);
-        textView=findViewById(R.id.textView);
+        setContentView(R.layout.activity_main2);
+       btn1=findViewById(R.id.button2);
+        textView=findViewById(R.id.textView2);
         runRecognizerSetup();
-
-
-
-
     }
 
 
@@ -79,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                     System.out.println(result.getMessage());
                 } else {
                     startL();
+                    //finish();
                 }
             }
         }.execute();
@@ -105,16 +101,31 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         });
     }
 
+
+
+
     public void showResult(String a)
     {
         Log.i("reSult", "showResult: "+a);
         textView.setText(a);
-        if(a.contains("کریں")){
-            Intent in=new Intent(getApplicationContext(),Main2Activity.class);
-            startActivity(in);
+
+        if (a.contains("کال"))
+        {
+
+            Intent intent=new Intent(MainActivity.this, Main4Activity.class);
+            startActivity(intent);
         }
-        /*if(a.contains("کال")){
-            Intent intent = new Intent(Intent.ACTION_DIAL);*//*Uri.parse("tel:" + "03066290363")*//*
+        else if(a.contains("میسج"))
+        {
+            Intent intent=new Intent(MainActivity.this, Message.class);
+            startActivity(intent);
+        }
+       /* if(a.contains("کریں")){
+            Intent in=new Intent(getApplicationContext(),Main2Activity.class);
+
+        }
+        if(a.contains("کال")){
+            Intent intent = new Intent(Intent.ACTION_DIAL);Uri.parse("tel:" + "03066290363")
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -139,9 +150,6 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                 //.setRawLogDir(assetsDir)
                 .getRecognizer();
         recognizer.addListener(this);
-        // Create keyword-activation search.
-        //recognizer.addKeyphraseSearch(KWS_SEARCH, KEYPHRASE);
-        // Create language model search
         File languageModel = new File(assetsDir, "new.lm");
         recognizer.addNgramSearch(MENU_SEARCH, languageModel);
     }
@@ -154,31 +162,28 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
     @Override
     public void onEndOfSpeech() {
-
     }
 
     @Override
     public void onPartialResult(Hypothesis hypothesis) {
-       /* if (hypothesis != null) {
-            //System.out.println(hypothesis.getHypstr());
-            Log.i("Eror", "onResult: 333333333333333333333333333");
-            String a= hypothesis.getHypstr();
-            showResult(a);
-        }
-        else
-            Log.i("Eror", "onResult: 222222222222222222222222");*/
+
     }
 
     @Override
     public void onResult(Hypothesis hypothesis) {
         if (hypothesis != null) {
             //Log.i("Results", "onResult "+hypothesis.getHypstr());
+            Log.i("1111111111", "onResult: 111111111111111111");
             String a= hypothesis.getHypstr();
-            result=a;
             showResult(a);
         }
-        //else
-            //Log.i("Eror", "onResult: Errrrrrorrrrrrrrrrrrrrrrr");
+        // jb recoginzation start karta hian magr wo koi word recoginzed nhi kar peta tu yeha ajata hain or jo pichla data hota hain sarif wohi show karvta hain.
+        else
+            {
+            Log.i("Eror", "onResult: Errrrrrorrrrrrrrrrrrrrrrr");
+            result="";
+            showResult(result);
+            }
     }
 
     @Override
@@ -188,31 +193,14 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
     @Override
     public void onTimeout() {
-        /*switchSearch(MENU_SEARCH);*/
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-       /* if (recognizer != null) {
-            recognizer.cancel();
-            recognizer.shutdown();*/
 
     }
 
-    public static void startLi(String searchName)
-    {
-        recognizer.startListening(searchName);
 
-    }
-
-    public static void stopL()
-    {
-        recognizer.stop();
-    }
-
-    public static String getResult()
-    {
-        return result;
-    }
 }

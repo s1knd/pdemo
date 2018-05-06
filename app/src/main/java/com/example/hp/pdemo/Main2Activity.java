@@ -1,5 +1,7 @@
+/*
 package com.example.hp.pdemo;
 
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -11,15 +13,15 @@ import edu.cmu.pocketsphinx.Hypothesis;
 import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
 
-import static com.example.hp.pdemo.MainActivity.KWS_SEARCH;
 
-public class Main2Activity extends AppCompatActivity{
+public class Main3Activity extends MainActivity{
 
     public static SpeechRecognizer recognizer;
     Hypothesis hypothesis;
     Button btn2;
     TextView textView;
     MainActivity mainActivity;
+    MediaPlayer mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,15 +32,17 @@ public class Main2Activity extends AppCompatActivity{
     }
     public void startL()
     {
+
         btn2.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                      MainActivity.startLi("عابد کو کال کرو");
+                      recognizer.startListening("عابد کو کال کرو");
                       break;
+
                     case MotionEvent.ACTION_UP:
-                        MainActivity.stopL();
+                        recognizer.stop();
                         showResult();
                         break;
 
@@ -48,8 +52,19 @@ public class Main2Activity extends AppCompatActivity{
         });
     }
     public void showResult(){
-        String a=MainActivity.getResult();
+        String a=mainActivity.getResult();
         textView.setText(a);
-    }
+if (a.contains("کال"))
+        {
+            Calling call=new Calling();
+            call.sendData(a);
+        }
+        else {
+
+        //mediaPlayer= MediaPlayer.create(Main2Activity.this, R.raw.abc);
+        //mediaPlayer.start();
+
 
 }
+}
+*/
