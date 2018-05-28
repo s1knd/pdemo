@@ -18,9 +18,32 @@
     <TextView
         android:id="@+id/mTextView"
         android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_height="80dp"
         android:layout_below="@+id/mButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="73dp"
-        android:text="TextView" />
+        android:layout_marginTop="73dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/mTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="112dp"
+        android:gravity="center"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/mButton"
+        android:layout_below="@+id/mTextView"
+        android:layout_marginTop="27dp"
+        android:text="ToggleButton"
+        android:textOff="@string/speech_toggle_on"
+        android:textOn="@string/speech_toggle_off"
+        />
+
+
 </RelativeLayout>

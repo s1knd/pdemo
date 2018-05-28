@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.cmu.pocketsphinx.Hypothesis;
 import edu.cmu.pocketsphinx.RecognitionListener;
@@ -35,16 +36,20 @@ public class Main4Activity extends MainActivity implements RecognitionListener{
         setContentView(R.layout.activity_main4);
         btn3=findViewById(R.id.button) ;
         textView3=findViewById(R.id.textView);
+        welcom=MediaPlayer.create(this, R.raw.callname);
+        welcom.start();
         startLm();
     }
     public void startLm()
     {
+        Toast.makeText(this,"Speak Contact Name", Toast.LENGTH_LONG).show();
 
         btn3.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
+                        welcom.release();
                         recognizer.startListening("عابد کو کال کرو");
                         break;
 
@@ -63,7 +68,9 @@ public class Main4Activity extends MainActivity implements RecognitionListener{
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent=new Intent(Main4Activity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 
     public void showResultThis(String a) {
@@ -99,6 +106,8 @@ public class Main4Activity extends MainActivity implements RecognitionListener{
         // jb recoginzation start karta hian magr wo koi word recoginzed nhi kar peta tu yeha ajata hain or jo pichla data hota hain sarif wohi show karvta hain.
         else
         {
+            welcom=MediaPlayer.create(this,R.raw.again);
+            welcom.start();
             Log.i("Eror", "onResult: Errrrrrorrrrrrrrrrrrrrrrr");
             result="";
             showResultThis("");

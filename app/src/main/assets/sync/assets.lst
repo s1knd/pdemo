@@ -5,5 +5,5 @@ en-us-ptm/mixture_weights
 en-us-ptm/noisedict
 en-us-ptm/transition_matrices
 en-us-ptm/variances
-new.dict.dic
-new.lm
+project.dict.dic
+project.lm

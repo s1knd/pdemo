@@ -3,6 +3,7 @@ package com.example.hp.pdemo;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     private static final String KEYPHRASE = "کال کریں";
     public static String result="";
 
+    MediaPlayer welcom;
+
     Intent in;
     Button btn1;
     TextView textView;
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         setContentView(R.layout.activity_main2);
        btn1=findViewById(R.id.button2);
         textView=findViewById(R.id.textView2);
+        welcom=MediaPlayer.create(MainActivity.this, R.raw.welcom);
         runRecognizerSetup();
     }
 
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                 if (result != null) {
                     System.out.println(result.getMessage());
                 } else {
+                    welcom.start();
                     startL();
                     //finish();
                 }
@@ -80,13 +85,15 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         }.execute();
     }
 
-    public void startL(){
+    private void startL(){
+
 
         btn1.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
+                        welcom.release();
                         recognizer.startListening(MENU_SEARCH);
                         break;
                     case MotionEvent.ACTION_UP:
@@ -113,44 +120,28 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         {
 
             Intent intent=new Intent(MainActivity.this, Main4Activity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            finish();
         }
         else if(a.contains("میسج"))
         {
             Intent intent=new Intent(MainActivity.this, Message.class);
             startActivity(intent);
         }
-       /* if(a.contains("کریں")){
-            Intent in=new Intent(getApplicationContext(),Main2Activity.class);
 
-        }
-        if(a.contains("کال")){
-            Intent intent = new Intent(Intent.ACTION_DIAL);Uri.parse("tel:" + "03066290363")
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-
-            startActivity(intent);
-        }*/
     }
 
     private void setupRecognizer(File assetsDir) throws IOException {
         recognizer = SpeechRecognizerSetup.defaultSetup()
                 .setAcousticModel(new File(assetsDir, "en-us-ptm"))
-                .setDictionary(new File(assetsDir, "new.dict.dic"))
+                .setDictionary(new File(assetsDir, "project.dict.dic"))
                 // Disable this line if you don't want recognizer to save raw
                 // audio files to app's storage
                 //.setRawLogDir(assetsDir)
                 .getRecognizer();
         recognizer.addListener(this);
-        File languageModel = new File(assetsDir, "new.lm");
+        File languageModel = new File(assetsDir, "project.lm");
         recognizer.addNgramSearch(MENU_SEARCH, languageModel);
     }
 
@@ -180,6 +171,8 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         // jb recoginzation start karta hian magr wo koi word recoginzed nhi kar peta tu yeha ajata hain or jo pichla data hota hain sarif wohi show karvta hain.
         else
             {
+                welcom=MediaPlayer.create(this,R.raw.again);
+                welcom.start();
             Log.i("Eror", "onResult: Errrrrrorrrrrrrrrrrrrrrrr");
             result="";
             showResult(result);
